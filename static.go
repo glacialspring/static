@@ -63,6 +63,7 @@ func Serve(urlPrefix string, fs ServeFileSystem) gin.HandlerFunc {
 	}
 	return func(c *gin.Context) {
 		if fs.Exists(urlPrefix, c.Request.URL.Path) {
+			c.Writer.Header().Add("Cache-Control", "max-age=31536000")
 			fileserver.ServeHTTP(c.Writer, c.Request)
 			c.Abort()
 		}
